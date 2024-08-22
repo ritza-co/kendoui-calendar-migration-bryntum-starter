@@ -1,138 +1,86 @@
-function sanitizeHtml(html) {
-  var temp = $('<div></div>').html(window.DOMPurify.sanitize(html));
-  return temp.html() || '';
-}
+import { Calendar } from './calendar.module.js';
 
-const scheduler = $(async function () {
-  let resourcesData = [];
-  let filtersArr = [];
-
-  await $.ajax({
-    url: '/api/resources/get',
-    dataType: 'json',
-    success: function (result) {
-      resourcesData = result;
-      filtersArr = result.map(function (resource) {
-        return { field: 'ownerId', operator: 'eq', value: resource.value };
-      });
+const calendar = new Calendar({
+  appendTo: 'calendar',
+  // Start life looking at this date
+  date: new Date('2024/9/9 08:00 AM'),
+  startDate: new Date('2024/9/9 08:00 AM'),
+  endDate: new Date('2024/9/9 08:00 PM'),
+  // A block of configs which is applied to all modes.
+  modeDefaults: null,
+  // 'day', 'week', 'month', etc.
+  mode: 'week',
+  timeZone: 'UTC',
+  crudManager: {
+    loadUrl: '/api/load',
+    autoLoad: true,
+    syncUrl: '/api/sync',
+    autoSync: true,
+    // This config enables response validation and dumping of found errors to the browser console.
+    // It's meant to be used as a development stage helper only so please set it to false for production systems.
+    validateResponse: true,
+  },
+  // Features named by the properties are included.
+  // An object is used to configure the feature.
+  features: {
+    eventTooltip: {
+      // Configuration options are passed on to the tooltip instance
+      // We want the tooltip's left edge aligned to the right edge of the event if possible.
+      align: 'l-r',
     },
-    error: function (result) {
-      console.error(result);
-    },
-  });
-
-  $('#scheduler').kendoScheduler({
-    toolbar: ['search'],
-    date: new Date('2024/9/9'),
-    startTime: new Date('2024/9/9 08:00 AM'),
-    views: ['day', { type: 'week', selected: true }, 'month', 'year', 'agenda'],
-    toolbar: {
-      items: [
-        ['today', 'previous', 'next'],
-        'current',
-        { type: 'spacer' },
-        {
-          template: function () {
-            const checkboxesHtml = resourcesData
-              .map(function (resource) {
-                return sanitizeHtml(`
-                  <label style="color: ${resource.color};">
-                    <input checked type="checkbox" value="${resource.value}" aria-label="${resource.text}">
-                    ${resource.text}
-                  </label>`);
-              })
-              .join('');
-            return `<div id="people">${checkboxesHtml}</div>`;
-          },
-        },
-        { type: 'spacer' },
-        'search',
-        { type: 'spacer' },
-        'views',
-      ],
-    },
-    timezone: 'Etc/UTC',
-    dataSource: {
-      transport: {
-        read: function (options) {
-          $.ajax({
-            url: '/api/tasks/get',
-            dataType: 'json',
-            success: function (result) {
-              options.success(result);
-            },
-            error: function (result) {
-              options.error(result);
-            },
-          });
-        },
-        submit: function (e) {
-          var data = e.data;
-          // Send batch update to desired URL, then notify success/error.
-          $.ajax({
-            url: '/api/tasks/sync',
-            type: 'POST',
-            dataType: 'json',
-            data,
-            success: function (data) {
-              e.success(data.updated, 'update');
-              e.success(data.created, 'create');
-              e.success(data.destroyed, 'destroy');
-            },
-            error: function (result) {
-              e.error(result, 'customerror', 'custom error');
-            },
-          });
+  },
+  tbar: {
+    items: {
+      nonWorkingDays: {
+        type: 'button',
+        text: 'Hide non-working days',
+        ref: 'hideNonWorkingDaysBtn',
+        color: 'b-gray',
+        icon: 'b-fa b-fa-square',
+        pressedIcon: 'b-fa b-fa-check-square',
+        toggleable: true,
+        pressed: false,
+        weight: 600,
+        style: 'margin-right: 1rem;',
+        onToggle({ pressed }) {
+          if (pressed) {
+            calendar.hideNonWorkingDays = true;
+          } else {
+            calendar.hideNonWorkingDays = false;
+          }
         },
       },
-      batch: true,
-      schema: {
-        model: {
-          id: 'id',
-          fields: {
-            id: { type: 'number' },
-            title: {
-              defaultValue: 'No title',
-              validation: { required: true },
-            },
-            start: { type: 'date' },
-            end: { type: 'date' },
-            startTimezone: { type: 'string' },
-            endTimezone: { type: 'string' },
-            description: { type: 'string' },
-            recurrenceId: { type: 'string' },
-            recurrenceRule: { type: 'string' },
-            reccurenceException: { type: 'string' },
-            ownerId: { type: 'number', validation: { required: true } },
-            isAllDay: { type: 'boolean' },
-          },
-        },
-      },
-      filter: {
-        logic: 'or',
-        filters: filtersArr,
+    },
+  },
+  sidebar: {
+    items: {
+      datePicker: {
+        // highlight the selected cell's week row
+        highlightSelectedWeek: true,
       },
     },
-    resources: [
+    bbar: [
+      // Button to toggle working time on/off
       {
-        field: 'ownerId',
-        title: 'Owner',
-        dataSource: resourcesData,
+        type: 'button',
+        text: 'Use working time',
+        ref: 'workingTimeBtn',
+        color: 'b-gray',
+        icon: 'b-fa b-fa-square',
+        pressedIcon: 'b-fa b-fa-check-square',
+        toggleable: true,
+        pressed: false,
+        style: 'margin-bottom: .5em',
+        onToggle({ pressed }) {
+          if (pressed) {
+            calendar.modeDefaults.dayStartTime = 8;
+            calendar.modeDefaults.dayEndTime = 17;
+          } else {
+            calendar.modeDefaults.dayStartTime = 1;
+            calendar.modeDefaults.dayEndTime = 24;
+          }
+        },
       },
     ],
-  });
-
-  $('#people :checkbox').change(function (e) {
-    var checked = $.map($('#people :checked'), function (checkbox) {
-      return parseInt($(checkbox).val());
-    });
-
-    var scheduler = $('#scheduler').data('kendoScheduler');
-
-    scheduler.dataSource.filter({
-      operator: function (task) {
-        return $.inArray(task.ownerId, checked) >= 0;
-      },
-    });
-  });
+  },
 });
