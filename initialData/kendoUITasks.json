@@ -1,0 +1,103 @@
+[
+  {
+    "id": 1,
+    "ownerId": 1,
+    "title": "Leadership conference",
+    "start": "Mon Sep 9 2024 08:00:00 GMT",
+    "end": "Mon Sep 9 2024 17:00:00 GMT",
+    "isAllDay": true
+  },
+  {
+    "id": 2,
+    "ownerId": 1,
+    "title": "HR Lecture",
+    "start": "Tue Sep 10 2024 10:30:00 GMT",
+    "end": "Tue Sep 10 2024 11:30:00 GMT",
+    "recurrenceRule": "FREQ=WEEKLY;BYDAY=TU,TH",
+    "isAllDay": false
+  },
+  {
+    "id": 3,
+    "ownerId": 1,
+    "title": "Business Lunch with Gregory Jones",
+    "start": "Wen Sep 11 2024 12:30:00 GMT",
+    "end": "Wen Sep 11 2024 13:30:00 GMT",
+    "isAllDay": false
+  },
+  {
+    "id": 4,
+    "ownerId": 1,
+    "title": "Review CVs",
+    "start": "Fri Sep 13 2024 14:30:00 GMT",
+    "end": "Fri Sep 13 2024 17:00:00 GMT",
+    "isAllDay": false
+  },
+  {
+    "id": 5,
+    "ownerId": 2,
+    "title": "Job Interview - Laura Bailey",
+    "start": "Wen Sep 11 2024 09:00:00 GMT",
+    "end": "Wen Sep 11 2024 10:00:00 GMT",
+    "isAllDay": false
+  },
+  {
+    "id": 6,
+    "ownerId": 2,
+    "title": "Install new laptops in conference rooms",
+    "start": "Tue Sep 10 2024 13:30:00 GMT",
+    "end": "Tue Sep 10 2024 16:00:00 GMT",
+    "isAllDay": false
+  },
+  {
+    "id": 7,
+    "ownerId": 2,
+    "title": "Team planning meeting",
+    "start": "Mon Sep 9 2024 09:30:00 GMT",
+    "end": "Mon Sep 9 2024 10:00:00 GMT",
+    "recurrenceRule": "FREQ=WEEKLY;BYDAY=MO",
+    "isAllDay": false
+  },
+  {
+    "id": 8,
+    "ownerId": 2,
+    "title": "Software updates",
+    "start": "Mon Sep 9 2024 17:00:00 GMT",
+    "end": "Mon Sep 9 2024 18:00:00 GMT",
+    "recurrenceRule": "FREQ=DAILY;COUNT=5",
+    "isAllDay": false
+  },
+  {
+    "id": 9,
+    "ownerId": 3,
+    "title": "Stand up meeting",
+    "start": "Mon Sep 9 2024 09:30:00 GMT",
+    "end": "Mon Sep 9 2024 10:00:00 GMT",
+    "recurrenceRule": "FREQ=DAILY",
+    "isAllDay": false
+  },
+  {
+    "id": 10,
+    "ownerId": 3,
+    "title": "HR seminar preparation",
+    "start": "Thu Sep 12 2024 11:00:00 GMT",
+    "end": "Thu Sep 12 2024 12:30:00 GMT",
+    "isAllDay": false
+  },
+  {
+    "id": 11,
+    "ownerId": 3,
+    "title": "Helpdesk weekly meeting",
+    "start": "Fri Sep 13 2024 14:30:00 GMT",
+    "end": "Fri Sep 13 2024 15:30:00 GMT",
+    "recurrenceRule": "FREQ=WEEKLY;BYDAY=FR",
+    "isAllDay": false
+  },
+  {
+    "id": 12,
+    "ownerId": 3,
+    "title": "Server maintenance",
+    "start": "Fri Sep 13 2024 15:00:00 GMT",
+    "end": "Fri Sep 13 2024 17:00:00 GMT",
+    "isAllDay": false
+  }
+]
