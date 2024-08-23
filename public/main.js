@@ -24,7 +24,7 @@ const scheduler = $(async function() {
     $('#scheduler').kendoScheduler({
         date      : new Date('2024/9/9'),
         startTime : new Date('2024/9/9 08:00 AM'),
-        views     : ['day', { type : 'week', selected : true }, 'month', 'year', 'agenda'],
+        views     : ['day', { type : 'week', selected : true }, "workWeek", 'month', 'year', 'agenda'],
         toolbar   : {
             items : [
                 ['today', 'previous', 'next'],
