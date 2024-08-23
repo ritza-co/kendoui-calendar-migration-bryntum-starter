@@ -171,7 +171,7 @@ function createOperation(added, table) {
             let id;
             if (table === 'events') {
                 let { exceptionDates, ...eventData } = data;
-                // if exceptionDates is an array, convert it to a comma separated string
+                // if exceptionDates is an array, convert it to a comma-separated string
                 if (Array.isArray(exceptionDates)) {
                     exceptionDates = exceptionDates.join(',');
                 }
@@ -219,7 +219,7 @@ function updateOperation(updated, table) {
         updated.map(async({ id, ...data }) => {
             if (table === 'events') {
                 let { exceptionDates, ...eventData } = data;
-                // if exceptionDates is an array, convert it to a comma separated string
+                // if exceptionDates is an array, convert it to a comma-separated string
                 if (Array.isArray(exceptionDates)) {
                     exceptionDates = exceptionDates.join(',');
                 }
